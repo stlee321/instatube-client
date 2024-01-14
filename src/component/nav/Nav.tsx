@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import {Link, useNavigate} from "react-router-dom";
+// import SearchBar from "./SearchBar";
 import Button from "../common/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faEllipsis,
@@ -9,33 +9,33 @@ import {
   faMagnifyingGlass,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
-import { useModal } from "../modal/Modal";
-import { initAuthState, useAppState } from "../../appState/AppState";
-import { useState } from "react";
-import { useLogout } from "../../hook/useAuth";
-import { useMe } from "../../hook/useUser";
-import { useAvatarImage } from "../../hook/useImage";
-import { useQueryClient } from "@tanstack/react-query";
+import {faBell} from "@fortawesome/free-regular-svg-icons";
+import {useModal} from "../modal/Modal";
+import {initAuthState, useAppState} from "../../appState/AppState";
+import {useState} from "react";
+import {useLogout} from "../../hook/useAuth";
+import {useMe} from "../../hook/useUser";
+import {useAvatarImage} from "../../hook/useImage";
+import {useQueryClient} from "@tanstack/react-query";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import NavDrawer from "./NavDrawer";
-import { useNotificationState } from "../../appState/NotificationState";
+import {useNotificationState} from "../../appState/NotificationState";
 
 export default function Nav() {
-  const { authState, setAuthState } = useAppState((state) => ({
+  const {authState, setAuthState} = useAppState((state) => ({
     authState: state.authState,
     setAuthState: state.setAuthState,
   }));
-  const { data: me } = useMe(authState.accessToken, authState.isLoggedIn);
-  const { data: avatarUrl } = useAvatarImage(me?.avatarId || "", !!me);
+  const {data: me} = useMe(authState.accessToken, authState.isLoggedIn);
+  const {data: avatarUrl} = useAvatarImage(me?.avatarId || "", !!me);
   const loginModal = useModal("login");
   const notiModal = useModal("notification");
   const navigate = useNavigate();
   const [optionOn, setOptionOn] = useState(false);
   const [drawerOn, setDrawerOn] = useState(false);
   const logoutMutation = useLogout();
-  const { hasNotification, setHasNotification } = useNotificationState(
+  const {hasNotification, setHasNotification} = useNotificationState(
     (state) => ({
       hasNotification: state.hasNotification,
       setHasNotification: state.setHasNotification,
@@ -104,9 +104,9 @@ export default function Nav() {
           ) : null}
         </div>
       </div>
-      <div className="hidden md:block">
+      {/* <div className="hidden md:block">
         <SearchBar />
-      </div>
+      </div> */}
       {authState.isLoggedIn ? (
         <div className="hidden md:flex jusitfy-end items-center">
           <div className="w-12 h-12 relative rounded-full overflow-hidden">

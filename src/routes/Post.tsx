@@ -1,46 +1,46 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,
   faEllipsis,
   faShareFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import {Link, Navigate, useNavigate, useParams} from "react-router-dom";
 import CommentSection from "../component/comment/CommentSection";
 import Thumbnail from "../component/common/Thumbnail";
 import PostLike from "../component/value/PostLike";
 import Follow from "../component/value/Follow";
-import { useState } from "react";
+import {useState} from "react";
 import {
   getUserPostCountKey,
   useDeletePost,
   usePost,
   useSidePost,
 } from "../hook/usePost";
-import { useAppState } from "../appState/AppState";
-import { useUser } from "../hook/useUser";
-import { useAvatarImage, usePostImage } from "../hook/useImage";
-import { buildContent } from "../utils/ContentBuilder";
-import { translateTime } from "../utils/timeTranslate";
-import { useQueryClient } from "@tanstack/react-query";
+import {useAppState} from "../appState/AppState";
+import {useUser} from "../hook/useUser";
+import {useAvatarImage, usePostImage} from "../hook/useImage";
+import {buildContent} from "../utils/ContentBuilder";
+import {translateTime} from "../utils/timeTranslate";
+import {useQueryClient} from "@tanstack/react-query";
 
 export default function Post() {
   const authState = useAppState((state) => state.authState);
   const [optionOn, setOptionOn] = useState(false);
-  const { postId } = useParams();
+  const {postId} = useParams();
   const {
     data: post,
     isLoading: isPostLoading,
     isError: isPostError,
   } = usePost(postId || "", postId !== undefined, true);
-  const { data: imageUrl } = usePostImage(post?.imageId || "", !!post);
+  const {data: imageUrl} = usePostImage(post?.imageId || "", !!post);
   const {
     data: user,
     isLoading: isUserLoading,
     isError: isUserError,
   } = useUser(post?.handle || "", !!post);
   const isMe = authState.isLoggedIn && user && authState.handle === user.handle;
-  const { data: avatarUrl } = useAvatarImage(user?.avatarId || "", !!user);
-  const { data: sidePosts } = useSidePost();
+  const {data: avatarUrl} = useAvatarImage(user?.avatarId || "", !!user);
+  const {data: sidePosts} = useSidePost();
   const navigate = useNavigate();
   const deletePostMutation = useDeletePost();
   const queryClient = useQueryClient();
@@ -127,7 +127,15 @@ export default function Post() {
             <div
               className="mr-2 hover:cursor-pointer aspect-square w-8 h-8 hover:bg-slate-400/30 delay-75 rounded-full flex justify-center items-center"
               onClick={() => {
-                alert("share");
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(
+                  () => {
+                    alert("주소가 복사되었습니다.");
+                  },
+                  () => {
+                    alert("다시 시도해 주세요.");
+                  }
+                );
               }}
             >
               <FontAwesomeIcon icon={faShareFromSquare} size={"lg"} />
